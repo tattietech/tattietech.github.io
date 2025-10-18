@@ -1,0 +1,67 @@
+---
+layout: default
+---
+
+<article class="recipe">
+  <h1>{{ page.title }}</h1>
+  {% if page.categories %}
+    <p><em>Category: {{ page.categories | join: ", " }}</em></p>
+  {% endif %}
+
+    {% if page.sections %}
+        {% if page.sections.size > 1 %}
+            <nav class="toc">
+              <strong>Table of contents —</strong>
+              <ul>
+                {% for section in page.sections %}
+                  <li><a href="#{{ section.title | slugify }}">{{ section.title }}</a></li>
+                {% endfor %}
+              </ul>
+            </nav>
+        {% endif %}
+
+    {% for section in page.sections %}
+      <section id="{{ section.title | slugify }}" class="recipe-section">
+        {% if page.sections.size > 1 %}
+            <h2>{{ section.title }}</h2>
+        {% endif %}
+
+        {% if section.notes %}
+            <blockquote>
+          <div class="notes">
+            <h3>Notes</h3>
+            <ul>
+              {% for note in section.notes %}
+                <li>{{ note | markdownify }}</li>
+              {% endfor %}
+            </ul>
+          </div>
+            </blockquote>
+        {% endif %}
+
+        {% if section.ingredients %}
+          <div class="ingredients">
+            <h3 class="recipe-sub-heading">Ingredients</h3>
+            <ul>
+              {% for ing in section.ingredients %}
+                <li>{{ ing | markdownify }}</li>
+              {% endfor %}
+            </ul>
+          </div>
+        {% endif %}
+
+        {% if section.method %}
+          <div class="method">
+            <h3 class="recipe-sub-heading">Method</h3>
+            <ol>
+              {% for step in section.method %}
+                <li>{{ step | markdownify }}</li>
+              {% endfor %}
+            </ol>
+          </div>
+        {% endif %}
+      </section>
+    {% endfor %}
+  {% endif %}
+  {{ content }}
+</article>
